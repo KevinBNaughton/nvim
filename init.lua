@@ -23,12 +23,7 @@ vim.opt.mouse = 'a'
 vim.opt.showmode = false
 
 -- Sync clipboard between OS and Neovim.
---  Schedule the setting after `UiEnter` because it can increase startup-time.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
-vim.schedule(function()
-  vim.opt.clipboard = 'unnamedplus'
-end)
+vim.opt.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -197,6 +192,7 @@ require('lazy').setup({
   -- Need fzf in case fzf is not installed already on machine.
   { 'junegunn/fzf', build = './install --bin' },
   require 'custom.plugins.fzf-lua',
+  require 'custom.plugins.autocomplete',
 
   -- LSP Plugins
   {

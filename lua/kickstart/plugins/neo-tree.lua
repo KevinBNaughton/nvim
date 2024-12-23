@@ -14,25 +14,28 @@ return {
   keys = {
     { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
   },
-  opts = {
-    filesystem = {
+  opts = function(_, opts)
+    opts.filesystem = {
       window = {
         mappings = {
           ['\\'] = 'close_window',
         },
       },
-    },
-  },
-  config = function()
-    require('lazy').setup({
-      {
-        '3rd/image.nvim',
-        opts = {},
-      },
-    }, {
-      rocks = {
-        hererocks = true, -- recommended if you do not have global installation of Lua 5.1.
-      },
-    })
+    }
+
+    return opts
   end,
+  -- TODO - Figure out how to get 3rd/image.nvim to work
+  -- config = function()
+  --   require('lazy').setup({
+  --     {
+  --       '3rd/image.nvim',
+  --       opts = {},
+  --     },
+  --   }, {
+  --     rocks = {
+  --       hererocks = true, -- recommended if you do not have global installation of Lua 5.1.
+  --     },
+  --   })
+  -- end,
 }
