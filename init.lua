@@ -543,6 +543,11 @@ require('lazy').setup({
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
+  {
+    'ThePrimeagen/harpoon',
+    branch = 'harpoon2',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+  },
 
   require 'plugins.debug',
   require 'plugins.indent_line',
@@ -575,3 +580,5 @@ require('lazy').setup({
     },
   },
 })
+
+require 'plugins.harpoon'
