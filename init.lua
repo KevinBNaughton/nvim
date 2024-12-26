@@ -21,7 +21,6 @@ vim.opt.rtp:prepend(lazypath)
 --    :Lazy update
 require('lazy').setup({
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-
   -- Use `opts = {}` to force a plugin to be loaded.
 
   { -- Useful plugin to show you pending keybinds.
@@ -127,32 +126,26 @@ require('lazy').setup({
           -- -- Jump to the definition of the word under your cursor.
           -- --  This is where a variable was first declared, or where a function is defined, etc.
           -- --  To jump back, press <C-t>.
-          -- map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
           map('gd', require('fzf-lua').lsp_definitions, '[G]oto [D]efinition')
 
           -- -- Find references for the word under your cursor.
-          -- map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
           map('gr', require('fzf-lua').lsp_references, '[G]oto [R]eferences')
 
           -- -- Jump to the implementation of the word under your cursor.
           -- --  Useful when your language has ways of declaring types without an actual implementation.
-          -- map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
           map('gI', require('fzf-lua').lsp_implementations, '[G]oto [I]mplementation')
 
           -- -- Jump to the type of the word under your cursor.
           -- --  Useful when you're not sure what type a variable is and you want to see
           -- --  the definition of its *type*, not where it was *defined*.
-          -- map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
           map('<leader>D', require('fzf-lua').lsp_typedefs, 'Type [D]efinition')
 
           -- -- Fuzzy find all the symbols in your current document.
           -- --  Symbols are things like variables, functions, types, etc.
-          -- map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
           map('<leader>ds', ":lua require'fzf-lua'.lsp_document_symbols({winopts = {preview={wrap='wrap'}}})<cr>", '[D]ocument [S]ymbols')
 
           -- -- Fuzzy find all the symbols in your current workspace.
           -- --  Similar to document symbols, except searches over your entire project.
-          -- map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
           map('<leader>ws', ":lua require'fzf-lua'.lsp_workspace_symbols({winopts = {preview={wrap='wrap'}}})<cr>", '[W]orkspace [S]ymbols')
 
           -- Rename the variable under your cursor.
@@ -240,7 +233,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
+        ts_ls = {},
         --
         jedi_language_server = {},
         lua_ls = {
@@ -260,15 +253,10 @@ require('lazy').setup({
       }
 
       -- Ensure the servers and tools above are installed
-      --  To check the current status of installed tools and/or manually install
-      --  other tools, you can run
-      --    :Mason
-      --
-      --  You can press `g?` for help in this menu.
+      -- Run :Mason
+      -- Press `g?` for help in this menu
       require('mason').setup()
 
-      -- You can add other tools here that you want Mason to install
-      -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
@@ -278,12 +266,13 @@ require('lazy').setup({
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
-            local server = servers[server_name] or {}
+            -- local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
+            -- server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+            -- require('lspconfig')[server_name].setup(server)
+            require('lspconfig')[server_name].setup {}
           end,
         },
       }
@@ -301,7 +290,7 @@ require('lazy').setup({
           require('conform').format { async = true, lsp_format = 'fallback' }
         end,
         mode = '',
-        desc = '[F]ormat buffer',
+        desc = '[f]ormat buffer',
       },
     },
     opts = {
@@ -324,17 +313,11 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
         python = { 'isort', 'black' },
-        -- python = { 'isort', 'black' },
-        --
-        -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
         typescript = { 'prettierd', 'prettier', stop_after_first = true },
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
         javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
         typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
-
         cpp = { 'clang-format' },
       },
       formatters = {
