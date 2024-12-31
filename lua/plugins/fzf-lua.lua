@@ -17,6 +17,12 @@ return {
       ":lua require'fzf-lua'.diagnostics_document({ fzf_opts = { ['--wrap'] = true } })<cr>",
       { desc = '[s]earch [d]iagnostics' }
     )
+    vim.keymap.set(
+      'n',
+      '<leader>sD',
+      ":lua require'fzf-lua'.diagnostics_workspace({ fzf_opts = { ['--wrap'] = true }})<cr>",
+      { desc = '[s]earch workspace [D]iagnostics' }
+    )
     vim.keymap.set('n', '<leader>sr', fzf.resume, { desc = '[s]earch [r]esume' })
     vim.keymap.set('n', '<leader>sR', fzf.registers, { desc = '[s]earch [R]egisters' })
     vim.keymap.set('n', '<leader>s.', fzf.oldfiles, { desc = '[s]earch recent files ("." for repeat)' })
